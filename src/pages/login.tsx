@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/router";
+import Link from 'next/link';
 
 export default function LoginPage() {
     const router = useRouter();
@@ -49,12 +50,12 @@ export default function LoginPage() {
                 </button>
 
                 <div className="login-actions">
-                    <a href="/" className="link-accent">
+                    <Link href="/" className="link-accent">
                     ← Back to home
-                    </a>
-                    <a href="/reset-password" className="link-accent">
+                    </Link>
+                    <Link href="/reset-password" className="link-accent">
                     Forgot password?
-                    </a>
+                    </Link>
                 </div>
             </form>
         </div>

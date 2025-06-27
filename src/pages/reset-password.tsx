@@ -1,15 +1,14 @@
 import { useState } from "react";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "@/lib/firebase";
-import { useRouter } from "next/router";
+import Link from 'next/link';
 
 export default function ResetPasswordPage() {
     const [ email, setEmail ] = useState("");
     const [ message, setMessage ] = useState("");
     const [ error, setError ] = useState("");
-    const router = useRouter();
 
-    const handleReset = async (e: React.FormEvent) => {
+    const handleReset = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setMessage("");
         setError("");
@@ -17,8 +16,13 @@ export default function ResetPasswordPage() {
         try {
             await sendPasswordResetEmail(auth, email);
             setMessage("Password reset email sent! Please check your inbox.");
-        } catch (err: any) {
-            setError(err.message || "Failed to send reset email.");
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                setError(err.message);
+            } else {
+                setError("Failed to send reset email.");
+
+            }
         }
     };
     
@@ -44,8 +48,8 @@ export default function ResetPasswordPage() {
                     </button>
 
                     <div className="login-actions">
-                        <a href="/" className="link-accent">← Back to home</a>
-                        <a href="/login" className="link-accent">Back to login</a>
+                        <Link href="/" className="link-accent">← Back to home</Link>
+                        <Link href="/login" className="link-accent">Back to login</Link>
                     </div>
             </form>
         </div>

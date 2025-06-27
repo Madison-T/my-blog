@@ -39,7 +39,7 @@ export const AuthProvider = ({ children }: {children: React.ReactNode}) => {
         try {
             await signInWithEmailAndPassword(auth, email, password);
             return true;
-        } catch (err) {
+        } catch {
             return false;
         }
     };
