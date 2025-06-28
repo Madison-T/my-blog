@@ -47,11 +47,5 @@
     "sass": "^1.89.2",
     "tailwindcss": "^4.1.11",
     "typescript": "^5"
-  },
-  "eslintConfig": {
-  "extends": "next/core-web-vitals",
-  "rules": {
-    "@typescript-eslint/no-explicit-any": "off"
   }
-}
 }
