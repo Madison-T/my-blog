@@ -30,9 +30,9 @@ export default function PostPage() {
   }
 
 return (
-  <div className="min-h-screen max-h-screen overflow-y-auto bg-[var(--background)] px-4 py-8">
+  <div className="min-h-screen max-h-screen overflow-y-auto bg-[var(--background)] px-4 py-8 pb-24">
+    <h1 className="max-w-3xl mx-auto text-[2.25rem] font-bold mb-4 px-4">{post.title}</h1>
     <div className="max-w-3xl mx-auto bg-white shadow rounded-md p-6">
-      <h1 className="text-[2.25rem] font-bold mb-4">{post.title}</h1>
       <div className="prose max-w-none dark:prose-invert">
         <div dangerouslySetInnerHTML={{ __html: post.content }} />
       </div>

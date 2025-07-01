@@ -24,7 +24,7 @@ export default function HomePage() {
   }, []);
 
 return (
-  <div className="min-h-screen max-h-screen overflow-y-auto bg-[var(--background)] px-4 py-8">
+  <div className="min-h-screen max-h-screen overflow-y-auto bg-[var(--background)] px-4 py-8 pb-24">
     <div className="max-w-3xl mx-auto space-y-6">
       <h1 className="text-4xl font-bold text-[var(--foreground)]">Published Posts</h1>
       {loading ? (

@@ -88,8 +88,6 @@ const MainToolbarContent = ({
 }) => {
   return (
     <>
-      <Spacer />
-
       <ToolbarGroup>
         <UndoRedoButton action="undo" />
         <UndoRedoButton action="redo" />
@@ -153,7 +151,7 @@ const MainToolbarContent = ({
       <ToolbarSeparator />
 
       <ToolbarGroup>
-        <ImageUploadButton className="tiptap-button-icon" />
+        <ImageUploadButton text="Add" className="tiptap-button-icon" />
       </ToolbarGroup>
 
       
