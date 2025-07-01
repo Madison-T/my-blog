@@ -110,7 +110,6 @@ const MainToolbarContent = ({
         <MarkButton type="bold" className={`tiptap-button-icon ${editor?.isActive("bold") ? "tiptap-button-icon-active" : ""}`} />
         <MarkButton type="italic" className={`tiptap-button-icon ${editor?.isActive("italic") ? "tiptap-button-icon-active" : ""}`} />
         <MarkButton type="strike" className={`tiptap-button-icon ${editor?.isActive("strike") ? "tiptap-button-icon-active" : ""}`} />
-        <MarkButton type="code" className={`tiptap-button-icon ${editor?.isActive("code") ? "tiptap-button-icon-active" : ""}`} />
         <MarkButton type="underline" className={`tiptap-button-icon ${editor?.isActive("underline") ? "tiptap-button-icon-active" : ""}`} />
       </ToolbarGroup>
 
@@ -154,7 +153,7 @@ const MainToolbarContent = ({
       <ToolbarSeparator />
 
       <ToolbarGroup>
-        <ImageUploadButton text="Add" className="tiptap-button-icon" />
+        <ImageUploadButton className="tiptap-button-icon" />
       </ToolbarGroup>
 
       
