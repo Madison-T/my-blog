@@ -223,7 +223,6 @@ mark {
 }
 
 .tiptap-toolbar {
-  position: -webkit-sticky; /* for iOS Safari */
   position: sticky;
   top: 0;
   z-index: 50;
@@ -236,9 +235,24 @@ mark {
   gap: 0.5rem;
   justify-content: center;
   overflow-x: auto;
-  -webkit-overflow-scrolling: touch; /* ensures smooth scroll, especially for horizontal overflow */
 }
 
+/* On small screens, force it to fixed */
+@media (max-width: 768px) {
+  .tiptap-toolbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100vw;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .simple-editor-content {
+    margin-top: 4.5rem; /* push editor down so it's not behind toolbar */
+  }
+}
 
 
 .tiptap-button-icon:hover {
