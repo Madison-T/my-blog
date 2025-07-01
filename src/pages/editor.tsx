@@ -121,9 +121,9 @@ export default function EditorPage() {
           className="w-full px-4 py-2 border border-gray-300 rounded-md text-lg bg-[var(--background)]"
         />
 
-        {/* Editor */}
-        <SimpleEditor content={content} onUpdate={setContent}/>
-
+        <div className="relative max-h-[80vh] overflow-y-auto">
+          <SimpleEditor content={content} onUpdate={setContent} />
+        </div>
         {/* Save Button */}
         <button
           onClick={handleSave}
