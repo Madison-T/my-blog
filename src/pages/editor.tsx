@@ -122,7 +122,7 @@ export default function EditorPage() {
         />
 
         <div className="relative max-h-[80vh] overflow-y-auto">
-          <SimpleEditor content={content} onUpdate={setContent} />
+        <SimpleEditor content={content} onUpdate={setContent} />
         </div>
         {/* Save Button */}
         <button
