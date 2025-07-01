@@ -3,7 +3,35 @@ import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import { useAuth } from "@/context/AuthContext";
 import { useEditorContext } from "../components/tiptap-templates/simple/use-editor-context";
+import { collection, addDoc, Timestamp, query, where, getDocs } from "firebase/firestore";
+import  { db } from "@/lib/firebase";
 
+function slugify(str: string): string {
+  return str
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, "") //remove nonword characters
+    .replace(/\s+/g,"-") // replace spaces with dashes
+    .replace(/--+/g, "-"); //collapse multiple dashes
+}
+
+async function getUniqueSlug(title: string): Promise<string> {
+  const baseSlug = slugify(title);
+  let slug = baseSlug;
+  let counter = 1;
+
+  while (true) {
+    const q = query(collection(db, "posts"), where("slug", "==", slug));
+    const snapshot = await getDocs(q);
+
+    if (snapshot.empty){
+      return slug;
+    }
+
+    slug = `${baseSlug}-${counter}`;
+    counter++;
+  }
+}
 
 // Dynamically import SimpleEditor to avoid SSR issues
 const SimpleEditor = dynamic(
@@ -42,21 +70,34 @@ export default function EditorPage() {
     }
   }, [user, router]);
 
-  const handleSave = () => {
-    if (!title || !content) {
+  const handleSave = async () => {
+    if (!title.trim() || !content.trim()) {
       alert("Title and content are required.");
       return;
     }
 
-    console.log("Saving post:", { title, content });
-    // TODO: Add Firestore save logic here
+    try {
+      const slug = await getUniqueSlug(title);
+
+      const docRef = await addDoc(collection(db, "posts"), {
+        title: title.trim(),
+        slug,
+        content,
+        createdAt: Timestamp.now(),
+      });
+      alert("Post saved!");
+      router.push(`/posts/${slug}`);
+    } catch (err) {
+      console.error("Error saving post:", err);
+      alert("Failed to save post. Check console for details");
+    }
   };
 
   if (loading) return <p className="text-center mt-10">Loading...</p>;
 
   return (
     <div className="min-h-screen max-h-screen overflow-y-auto bg-[var(--background)] px-4 py-6 sm:px-8">
-      <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6 space-y-6">
+      <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-md p-6 space-y-6">
         {/* Header */}
         <div className="flex justify-between items-center border-b pb-4">
           <h1 className="text-2xl font-bold text-[var(--foreground)]">Blog Editor</h1>
@@ -81,8 +122,7 @@ export default function EditorPage() {
         />
 
         {/* Editor */}
-        <SimpleEditor />
-        <EditorContentTracker onChange={setContent} />
+        <SimpleEditor content={content} onUpdate={setContent}/>
 
         {/* Save Button */}
         <button

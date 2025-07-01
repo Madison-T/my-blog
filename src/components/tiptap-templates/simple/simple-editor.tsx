@@ -4,7 +4,7 @@ import { EditorContent, EditorContext, useEditor } from "@tiptap/react"
 // --- Tiptap Core Extensions ---
 import { StarterKit } from "@tiptap/starter-kit"
 import { Image } from "@tiptap/extension-image"
-import { TaskItem } from "@tiptap/extension-task-item"
+import { TaskItem } from "@/components/tiptap-extension/task-item-fixed"
 import { TaskList } from "@tiptap/extension-task-list"
 import { TextAlign } from "@tiptap/extension-text-align"
 import { Typography } from "@tiptap/extension-typography"
@@ -12,6 +12,10 @@ import { Highlight } from "@tiptap/extension-highlight"
 import { Subscript } from "@tiptap/extension-subscript"
 import { Superscript } from "@tiptap/extension-superscript"
 import { Underline } from "@tiptap/extension-underline"
+import { Heading } from "@tiptap/extension-heading";
+import BulletList from "@tiptap/extension-bullet-list";
+import OrderedList from "@tiptap/extension-ordered-list";
+import ListItem from "@tiptap/extension-list-item";
 
 // --- Custom Extensions ---
 import { Link } from "@/components/tiptap-extension/link-extension"
@@ -72,13 +76,15 @@ import { handleImageUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils"
 import content from "@/components/tiptap-templates/simple/data/content.json"
 
 const MainToolbarContent = ({
+  editor,
   onHighlighterClick,
   onLinkClick,
   isMobile,
 }: {
-  onHighlighterClick: () => void
-  onLinkClick: () => void
-  isMobile: boolean
+  editor: any | null;
+  onHighlighterClick: () => void;
+  onLinkClick: () => void;
+  isMobile: boolean;
 }) => {
   return (
     <>
@@ -94,97 +100,134 @@ const MainToolbarContent = ({
       <ToolbarGroup>
         <HeadingDropdownMenu levels={[1, 2, 3, 4]} />
         <ListDropdownMenu types={["bulletList", "orderedList", "taskList"]} />
-        <BlockquoteButton />
-        <CodeBlockButton />
+        <BlockquoteButton className={`tiptap-button-icon ${editor?.isActive("blockquote") ? "tiptap-button-icon-active" : ""}`} />
+        <CodeBlockButton className={`tiptap-button-icon ${editor?.isActive("codeBlock") ? "tiptap-button-icon-active" : ""}`} />
       </ToolbarGroup>
 
       <ToolbarSeparator />
 
       <ToolbarGroup>
-        <MarkButton type="bold" />
-        <MarkButton type="italic" />
-        <MarkButton type="strike" />
-        <MarkButton type="code" />
-        <MarkButton type="underline" />
-        {!isMobile ? (
-          <ColorHighlightPopover />
-        ) : (
-          <ColorHighlightPopoverButton onClick={onHighlighterClick} />
-        )}
+        <MarkButton type="bold" className={`tiptap-button-icon ${editor?.isActive("bold") ? "tiptap-button-icon-active" : ""}`} />
+        <MarkButton type="italic" className={`tiptap-button-icon ${editor?.isActive("italic") ? "tiptap-button-icon-active" : ""}`} />
+        <MarkButton type="strike" className={`tiptap-button-icon ${editor?.isActive("strike") ? "tiptap-button-icon-active" : ""}`} />
+        <MarkButton type="code" className={`tiptap-button-icon ${editor?.isActive("code") ? "tiptap-button-icon-active" : ""}`} />
+        <MarkButton type="underline" className={`tiptap-button-icon ${editor?.isActive("underline") ? "tiptap-button-icon-active" : ""}`} />
+      </ToolbarGroup>
+
+      <ToolbarSeparator />
+
+      <ToolbarGroup>
+        <Button
+          onClick={() => {
+            if (!editor) return;
+            editor.chain().focus().toggleHighlight({ color: "#fef08a" }).run();
+          }}
+          className={`tiptap-button-icon ${editor?.isActive("highlight", { color: "#fef08a" }) ? "tiptap-button-icon-active" : ""}`}
+          aria-label="Toggle yellow highlight"
+        >
+          <HighlighterIcon className="tiptap-button-icon" />
+        </Button>
+      </ToolbarGroup>
+
+      <ToolbarSeparator />
+
+      <ToolbarGroup>
         {!isMobile ? <LinkPopover /> : <LinkButton onClick={onLinkClick} />}
       </ToolbarGroup>
 
       <ToolbarSeparator />
 
       <ToolbarGroup>
-        <MarkButton type="superscript" />
-        <MarkButton type="subscript" />
+        <MarkButton type="superscript" className={`tiptap-button-icon ${editor?.isActive("superscript") ? "tiptap-button-icon-active" : ""}`} />
+        <MarkButton type="subscript" className={`tiptap-button-icon ${editor?.isActive("subscript") ? "tiptap-button-icon-active" : ""}`} />
       </ToolbarGroup>
 
       <ToolbarSeparator />
 
       <ToolbarGroup>
-        <TextAlignButton align="left" />
-        <TextAlignButton align="center" />
-        <TextAlignButton align="right" />
-        <TextAlignButton align="justify" />
+        <TextAlignButton align="left" className={`tiptap-button-icon ${editor?.isActive({ textAlign: "left" }) ? "tiptap-button-icon-active" : ""}`} />
+        <TextAlignButton align="center" className={`tiptap-button-icon ${editor?.isActive({ textAlign: "center" }) ? "tiptap-button-icon-active" : ""}`} />
+        <TextAlignButton align="right" className={`tiptap-button-icon ${editor?.isActive({ textAlign: "right" }) ? "tiptap-button-icon-active" : ""}`} />
+        <TextAlignButton align="justify" className={`tiptap-button-icon ${editor?.isActive({ textAlign: "justify" }) ? "tiptap-button-icon-active" : ""}`} />
       </ToolbarGroup>
 
       <ToolbarSeparator />
 
       <ToolbarGroup>
-        <ImageUploadButton text="Add" />
+        <ImageUploadButton text="Add" className="tiptap-button-icon" />
       </ToolbarGroup>
 
-      <Spacer />
+      
 
-      {isMobile && <ToolbarSeparator />}
-
-      <ToolbarGroup>
-        <ThemeToggle />
-      </ToolbarGroup>
     </>
-  )
-}
+  );
+};
+
 
 const MobileToolbarContent = ({
   type,
   onBack,
 }: {
-  type: "highlighter" | "link"
-  onBack: () => void
-}) => (
-  <>
-    <ToolbarGroup>
-      <Button data-style="ghost" onClick={onBack}>
-        <ArrowLeftIcon className="tiptap-button-icon" />
-        {type === "highlighter" ? (
-          <HighlighterIcon className="tiptap-button-icon" />
-        ) : (
-          <LinkIcon className="tiptap-button-icon" />
-        )}
-      </Button>
-    </ToolbarGroup>
+  type: "highlighter" | "link";
+  onBack: () => void;
+}) => {
+  const { editor } = React.useContext(EditorContext) as { editor: any };
 
-    <ToolbarSeparator />
+  return (
+    <>
+      <ToolbarGroup>
+        <Button data-style="ghost" onClick={onBack}>
+          <ArrowLeftIcon className="tiptap-button-icon" />
+          {type === "highlighter" ? (
+            <HighlighterIcon className="tiptap-button-icon" />
+          ) : (
+            <LinkIcon className="tiptap-button-icon" />
+          )}
+        </Button>
+      </ToolbarGroup>
 
-    {type === "highlighter" ? (
-      <ColorHighlightPopoverContent />
-    ) : (
-      <LinkContent />
-    )}
-  </>
-)
+      <ToolbarSeparator />
 
-export function SimpleEditor() {
-  const isMobile = useMobile()
-  const windowSize = useWindowSize()
-  const [mobileView, setMobileView] = React.useState<
-    "main" | "highlighter" | "link"
-  >("main")
-  const toolbarRef = React.useRef<HTMLDivElement>(null)
+      {type === "highlighter" ? (
+        <ToolbarGroup>
+          <Button
+            onClick={() => {
+              if (!editor) return;
+              editor.chain().focus().toggleHighlight({ color: "#fef08a" }).run();
+            }}
+            className={`tiptap-button-icon ${editor?.isActive("highlight", { color: "#fef08a" }) ? "tiptap-button-icon-active" : ""}`}
+            aria-label="Toggle yellow highlight"
+          >
+            <HighlighterIcon className="tiptap-button-icon" />
+          </Button>
+        </ToolbarGroup>
+      ) : (
+        <ToolbarGroup>
+          <LinkContent />
+        </ToolbarGroup>
+      )}
+    </>
+  );
+};
+
+
+export function SimpleEditor({
+  content,
+  onUpdate,
+}: {
+  content: string;
+  onUpdate: (html: string) => void;
+}) {
+  const isMobile = useMobile();
+  const windowSize = useWindowSize();
+  const [mobileView, setMobileView] = React.useState<"main" | "highlighter" | "link">("main");
+  const toolbarRef = React.useRef<HTMLDivElement>(null);
 
   const editor = useEditor({
+    content,
+    onUpdate({ editor }) {
+      onUpdate(editor.getHTML());
+    },
     immediatelyRender: false,
     editorProps: {
       attributes: {
@@ -195,11 +238,25 @@ export function SimpleEditor() {
       },
     },
     extensions: [
-      StarterKit,
+      StarterKit.configure({
+        heading: false,        // Disable built-in heading
+        bulletList: false,     // Disable built-in bullet list
+        orderedList: false,    // Disable built-in ordered list
+        listItem: false        // Disable built-in listItem
+      }),
+      Heading.configure({ levels: [1, 2, 3, 4] }),
+      BulletList,
+      OrderedList,
+      ListItem,
       TextAlign.configure({ types: ["heading", "paragraph"] }),
       Underline,
       TaskList,
-      TaskItem.configure({ nested: true }),
+      TaskItem.configure({
+        nested: true,
+        HTMLAttributes: {
+          class: "task-item",
+        },
+      }),
       Highlight.configure({ multicolor: true }),
       Image,
       Typography,
@@ -217,19 +274,18 @@ export function SimpleEditor() {
       TrailingNode,
       Link.configure({ openOnClick: false }),
     ],
-    content: content,
-  })
+  });
 
   const bodyRect = useCursorVisibility({
     editor,
     overlayHeight: toolbarRef.current?.getBoundingClientRect().height ?? 0,
-  })
+  });
 
   React.useEffect(() => {
     if (!isMobile && mobileView !== "main") {
-      setMobileView("main")
+      setMobileView("main");
     }
-  }, [isMobile, mobileView])
+  }, [isMobile, mobileView]);
 
   return (
     <EditorContext.Provider value={{ editor }}>
@@ -245,6 +301,7 @@ export function SimpleEditor() {
       >
         {mobileView === "main" ? (
           <MainToolbarContent
+            editor={editor}
             onHighlighterClick={() => setMobileView("highlighter")}
             onLinkClick={() => setMobileView("link")}
             isMobile={isMobile}
@@ -265,5 +322,5 @@ export function SimpleEditor() {
         />
       </div>
     </EditorContext.Provider>
-  )
+  );
 }

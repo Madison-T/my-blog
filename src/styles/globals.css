@@ -45,3 +45,212 @@ body {
   color: #000;
 }
 
+.prose pre {
+  white-space: pre-wrap;
+  overflow-x: auto;
+  background-color: #f5f5f5;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+.prose img {
+  max-width: 100%;
+  border-radius: 0.5rem;
+  margin-top: 1rem;
+}
+
+.prose blockquote {
+  padding-left: 1rem;
+  border-left: 4px solid #ccc;
+  color: #555;
+  font-style: italic;
+}
+
+.prose input[type="checkbox"] {
+  accent-color: var(--accent-blue);
+  transform: scale(1.2);
+  margin-right: 0.5rem;
+}
+
+.prose ul[data-type="taskList"] {
+  padding-left: 0;
+  list-style: none;
+}
+
+.prose ul[data-type="taskList"] > li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.prose ul[data-type="taskList"] > li > div {
+  margin-top: 0.1rem;
+}
+
+.prose h1 {
+  font-size: 2.25rem; /* Tailwind: text-3xl */
+  font-weight: 700;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.prose h2 {
+  font-size: 1.875rem; /* Tailwind: text-2xl */
+  font-weight: 600;
+  margin-top: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose h3 {
+  font-size: 1.5rem; /* Tailwind: text-xl */
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.prose h4 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.prose ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.prose ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.prose li {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.simple-editor-content {
+  background-color: #ffffff; /* White background */
+  border-radius: 8px;
+  padding: 1.5rem;
+  min-height: 300px;
+  font-family: var(--font-sans);
+  color: var(--foreground);
+  overflow-y: auto;
+}
+
+/* Optional: If your toolbar overlaps */
+.tiptap-editor-wrapper {
+  padding-top: 4rem; /* adjust if toolbar overlays */
+}
+
+/* Style checkboxes in the editor task list */
+.ProseMirror .task-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.task-item input[type="checkbox"] {
+  display: inline-block !important;
+  min-width: 1.25rem !important;
+  min-height: 1.25rem !important;
+  width: 1.25rem !important;
+  height: 1.25rem !important;
+  appearance: checkbox !important;
+  -webkit-appearance: checkbox !important;
+  -moz-appearance: checkbox !important;
+  accent-color: var(--accent-blue) !important;
+  background-color: white !important;
+  border: 1px solid #999 !important;
+  margin: 0 0.5rem 0 0 !important;
+  flex-shrink: 0 !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+
+.task-item label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+mark {
+  background-color: #fff475; /* light yellow */
+  padding: 0.1rem 0.25rem;
+  border-radius: 0.25rem;
+}
+
+.ProseMirror blockquote {
+  padding-left: 1rem;
+  border-left: 4px solid #ccc;
+  color: #555;
+  font-style: italic;
+  margin: 1rem 0;
+}
+
+/* ------------------------------
+   Code Block Styling (Editor)
+------------------------------ */
+.ProseMirror pre {
+  background-color: #f5f5f5 !important;
+  padding: 1rem;
+  border-radius: 0.5rem !important;
+  font-family: monospace !important;
+  font-size: 0.95rem ;
+  line-height: 1.5 ;
+  overflow-x: auto !important;
+  white-space: pre-wrap !important;
+  border: 1px solid #ddd !important;
+  margin-top: 1rem !important;
+  margin-bottom: 1rem !important;
+  color: #1e1e1e !important;
+}
+
+.ProseMirror code {
+  display: block;
+  background: none !important;
+  padding: 0 !important;
+  font-family: inherit !important;
+  font-size: inherit !important;
+  color: inherit !important;
+}
+
+.tiptap-toolbar {
+  background-color: #ffffff !important;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  z-index: 10;
+}
+
+
+.tiptap-button-icon:hover {
+  background-color: #f1f5f9;
+}
+.tiptap-button-icon-active {
+  background-color: #dbeafe;
+  border: 1px solid #60a5fa;
+  color: #1e3a8a;
+  box-shadow: 0 0 0 2px #bfdbfe;
+}
+/* White background for dropdowns & popovers like Heading, List, Link */
+[data-radix-popper-content-wrapper],
+[data-radix-popper-content-wrapper] > div,
+[data-state="open"] {
+  background-color: #ffffff !important;
+
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  z-index: 50;
+}
+
+/* Optional: Add padding to dropdown content */
+[data-radix-popper-content-wrapper] > div {
+  padding: 0.5rem;
+}

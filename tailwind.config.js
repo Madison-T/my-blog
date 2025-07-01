@@ -25,5 +25,5 @@ module.exports = {
     },
   },
   darkMode: "media", // or 'class' if you want manual toggling
-  plugins: [],
+  plugins: [require("@tailwindcss/typography")],
 };
