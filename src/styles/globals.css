@@ -223,18 +223,22 @@ mark {
 }
 
 .tiptap-toolbar {
+  position: -webkit-sticky; /* for iOS Safari */
   position: sticky;
   top: 0;
+  z-index: 50;
   background-color: #ffffff !important;
   padding: 0.5rem;
   border-bottom: 1px solid #ddd;
-  z-index: 20;
-  overflow-x: auto;
+
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
   justify-content: center;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* ensures smooth scroll, especially for horizontal overflow */
 }
+
 
 
 .tiptap-button-icon:hover {
