@@ -279,3 +279,8 @@ mark {
 [data-radix-popper-content-wrapper] > div {
   padding: 0.5rem;
 }
+
+.prose p {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
